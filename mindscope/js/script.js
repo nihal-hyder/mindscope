@@ -21,7 +21,7 @@
   // Local development uses your own uvicorn; the deployed site uses the
   // Hugging Face Space. Replace PRODUCTION_API with your Space's URL.
   const LOCAL_API = "http://localhost:2200";
-  const PRODUCTION_API = "https://YOUR-HF-USERNAME-mindscope-api.hf.space";
+  const PRODUCTION_API = "https://nihaluser-mindscope-api.hf.space";
   const IS_LOCAL = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
   const API_BASE = IS_LOCAL ? LOCAL_API : PRODUCTION_API;
   const ENDPOINTS = {

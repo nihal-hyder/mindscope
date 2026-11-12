@@ -2,3 +2,6 @@ __pycache__/
 .ipynb_checkpoints/
 .virtual_documents/
 anaconda_projects/
+# Copies for the Hugging Face upload (originals live in the repo root)
+hf-space/main.py
+hf-space/Mnetal_Health_Model.pkl
