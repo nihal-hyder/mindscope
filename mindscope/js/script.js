@@ -18,7 +18,12 @@
   /* ------------------------------------------------------------------------
      Configuration
      ------------------------------------------------------------------------ */
-  const API_BASE = "http://localhost:2340";
+  // Local development uses your own uvicorn; the deployed site uses the
+  // Hugging Face Space. Replace PRODUCTION_API with your Space's URL.
+  const LOCAL_API = "http://localhost:2200";
+  const PRODUCTION_API = "https://YOUR-HF-USERNAME-mindscope-api.hf.space";
+  const IS_LOCAL = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+  const API_BASE = IS_LOCAL ? LOCAL_API : PRODUCTION_API;
   const ENDPOINTS = {
     health: `${API_BASE}/hello`,
     predict: `${API_BASE}/predict`,
@@ -152,6 +157,28 @@
       );
       sections.forEach((s) => observer.observe(s));
     }
+  }
+
+  /* ========================================================================
+     THEME (light by default; choice saved per browser)
+     ======================================================================== */
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    const toggle = $("#theme-toggle");
+    const next = theme === "dark" ? "light" : "dark";
+    toggle.setAttribute("aria-label", `Switch to ${next} mode`);
+    toggle.setAttribute("aria-pressed", String(theme === "dark"));
+    const meta = $('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#121110" : "#f6f4ef");
+  }
+
+  function initTheme() {
+    applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+    $("#theme-toggle").addEventListener("click", () => {
+      const theme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(theme);
+      try { localStorage.setItem("mindscope-theme", theme); } catch { /* storage unavailable */ }
+    });
   }
 
   /** Fade/slide elements in as they enter the viewport. */
@@ -897,6 +924,7 @@
      INIT
      ======================================================================== */
   function init() {
+    initTheme();
     initNavigation();
     initReveal();
     initApiStatus();
